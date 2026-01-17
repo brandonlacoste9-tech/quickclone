@@ -23,6 +23,25 @@ export default function PlatformPage() {
     alert('Clone generated! Check your dashboard.');
   };
 
+  const handleUseTemplate = async (templateId: string) => {
+    setIsGenerating(true);
+    setSelectedTemplate(templateId);
+    // Simulate loading template
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsGenerating(false);
+    alert(`${templates.find(t => t.id === templateId)?.name} template loaded! Generating code...`);
+    // In production, this would call the API to generate code from template
+    await handleGenerate();
+  };
+
+  const handlePreview = (templateId: string) => {
+    const template = templates.find(t => t.id === templateId);
+    if (template) {
+      // In production, open preview in modal or new tab
+      window.open(`/preview/${templateId}`, '_blank');
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       {/* Header */}
@@ -187,10 +206,10 @@ export default function PlatformPage() {
                   </div>
                   <p className="text-gray-400 mb-4">{template.description}</p>
                   <div className="flex space-x-2">
-                    <button className="flex-1 bg-purple-600 text-white py-2 rounded-lg font-medium hover:bg-purple-700">
+                    <button className="flex-1 bg-purple-600 text-white py-2 rounded-lg font-medium hover:bg-purple-700"> onClick={() => handleUseTemplate(template.id)}
                       Use Template
                     </button>
-                    <button className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600">
+                    <button className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"> onClick={() => handlePreview(template.id)}
                       Preview
                     </button>
                   </div>
